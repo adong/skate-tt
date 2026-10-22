@@ -415,7 +415,7 @@
     return false;
   }
 
-  function grindStep(s, inp) {
+  function grindStep(s, inp, grabPop) {
     const g = s.grind, r = g.rail, L = s.L;
     g.t += DT;
     const sl = r.dy / r.lh, cosA = 1 / Math.sqrt(1 + sl * sl);
@@ -425,7 +425,7 @@
       s.balance += (s.balance * 1.8 + s.balDrift) * DT + inp.steer * 2.8 * DT;
       if (Math.abs(s.balance) > 1) { endGrind(s, false); bail(s, 'balance'); return; }
     }
-    if (inp.jump || inp.flip || inp.grab) {
+    if (inp.jump || inp.flip || grabPop) {
       // pop off the rail
       endGrind(s, true);
       s.vy = L.pop * 0.85;
@@ -465,8 +465,10 @@
     s.railCool = Math.max(0, s.railCool - DT);
     s.landT += DT;
     s.popT += DT;
+    // grab pops an ollie on the ground only when it's just pressed (the game says so with grabPress; held = once)
+    const grabPop = inp.grabPress === undefined ? inp.grab : inp.grabPress;
     if (s.mode === 'ground') {
-      if (inp.jump || inp.flip || inp.grab) {
+      if (inp.jump || inp.flip || grabPop) {
         ollie(s, inp, false);
         airTricks(s, inp);
       } else groundStep(s, inp, false);
@@ -477,7 +479,7 @@
         if (s.comboT > s.L.window) bank(s);
       }
     } else if (s.mode === 'air') airStep(s, inp);
-    else if (s.mode === 'grind') grindStep(s, inp);
+    else if (s.mode === 'grind') grindStep(s, inp, grabPop);
     else if (s.mode === 'bail') {
       s.bailT += DT;
       groundStep(s, NONE, true);

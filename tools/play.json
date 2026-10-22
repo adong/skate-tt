@@ -1,0 +1,7 @@
+[
+  { "label": "muted", "js": "localStorage.setItem('claudeGames.muted', '1'); location.reload(); 'reload'", "wait": 5000 },
+  { "label": "boot", "js": "typeof game + ' ' + game.info().state + ' ' + document.title" },
+  { "label": "check", "js": "game.hold(true); JSON.stringify(game.check())" },
+  { "label": "a run", "js": "game.start({ players: ['tommy'], levels: { tommy: 'easy' } }); game.auto('funboxPipe'); game.step(12, 30); game.callBuddy(); game.step(4, 30); var i = game.info(); JSON.stringify([i.state, i.me.score, i.buddy.state, i.line])" },
+  { "label": "to the end", "js": "game.endRun(); game.step(5, 30); var i = game.info(); i.state + ' ' + JSON.stringify(i.runs)", "wait": 500, "shot": "play-over" }
+]

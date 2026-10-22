@@ -1,0 +1,4 @@
+[
+  { "label": "muted", "js": "localStorage.setItem('claudeGames.muted', '1'); localStorage.setItem('claudeGames.lang', 'en'); localStorage.setItem('ttSkate.n', '1'); localStorage.setItem('ttSkate.slots', 'teddy,tommy'); location.reload(); 'reload'", "wait": 5000 },
+  { "label": "title", "js": "game.hold(true); game.step(0.8, 30); game.step(0.03); game.info().state", "wait": 800, "shot": "screenshot" }
+]

@@ -20,7 +20,7 @@
   const G = {
     state: 'loading', paused: false, n: 1, slots: ['teddy', 'tommy'], levels: {}, turn: 0, runs: [],
     time: RUN, clock: 0, acc: 0, me: null, cpus: [], attract: [], podium: [], endT: 0, countT: 0,
-    line: null, lineT: 0, got: 0, lastLine: null, keys: {}, edges: { jump: false, flip: false }, pad: {},
+    line: null, lineT: 0, got: 0, lastLine: null, keys: {}, edges: { jump: false, flip: false, grab: false }, pad: {},
     rollT: 0, grindT: 0, lastInput: -9, comboKey: '', comboHideT: 0, hold: false, faces: {}, tickSec: 99, overT: 0, confT: 0,
     pushing: false, autoJumpT: 0,
   };
@@ -192,10 +192,10 @@
     const up = k.ArrowUp || k.KeyW, down = k.ArrowDown || k.KeyS;
     const inp = {
       steer: (right ? 1 : 0) - (left ? 1 : 0), push: !!(up || t.push), brake: !!down,
-      jump: G.edges.jump, flip: G.edges.flip, grab: !!(k.KeyG || k.KeyK || t.grab),
+      jump: G.edges.jump, flip: G.edges.flip, grab: !!(k.KeyG || k.KeyK || t.grab), grabPress: G.edges.grab,
       dir: left ? 'left' : right ? 'right' : up ? 'up' : down ? 'down' : '',
     };
-    G.edges.jump = G.edges.flip = false;
+    G.edges.jump = G.edges.flip = G.edges.grab = false;
     if (inp.steer || inp.jump || inp.flip || inp.grab) G.lastInput = G.clock;
     G.pushing = inp.push;
     return inp;
@@ -586,6 +586,7 @@
       if (G.state !== 'play') return;
       if (c === 'Space' && !e.repeat) G.edges.jump = true;
       if ((c === 'KeyF' || c === 'KeyJ') && !e.repeat) G.edges.flip = true;
+      if ((c === 'KeyG' || c === 'KeyK') && !e.repeat) G.edges.grab = true;
       if (KEYMAP[c]) G.keys[c] = true;
       if (c === 'Space' || c.startsWith('Arrow')) e.preventDefault();
     });
@@ -604,7 +605,7 @@
         if (G.state !== 'play') return;
         if (k === 'jump') G.edges.jump = true;
         else if (k === 'flip') G.edges.flip = true;
-        else G.pad[k] = true;
+        else { G.pad[k] = true; if (k === 'grab') G.edges.grab = true; }
       };
       const up = () => { b.classList.remove('on'); if (k !== 'jump' && k !== 'flip') G.pad[k] = false; };
       b.addEventListener('pointerdown', down);
