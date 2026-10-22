@@ -13,7 +13,7 @@
   function create(o = {}) {
     return {
       rnd: SK.skater.rng(o.seed || 11), skill: o.skill || 0, line: null, i: 0, pending: null, grab: false, spinGoal: 0,
-      flipDir: '', stuckT: 0, done: 0, recent: [], wob: 0, wobT: 0, lines: o.lines || P.lines, loop: !!o.loop, lastJump: -9,
+      flipDir: '', stuckT: 0, done: 0, recent: [], wob: 0, wobT: 0, lines: o.lines || P.lines, loop: !!o.loop, lastJump: -9, rest: o.rest || 0, slowT: 0,
     };
   }
 
@@ -38,6 +38,7 @@
       if (v < bestV) { bestV = v; best = ln; }
     }
     best = best || b.lines[0];
+    b.slowT = b.rest; // cruise over to it slowly first (the CPU friends' pace)
     b.recent.push(best.id);
     if (b.recent.length > Math.min(3, b.lines.length - 1)) b.recent.shift();
     setLine(b, best, 0);
@@ -105,7 +106,9 @@
       const up = (gr.gx * Math.cos(md) + gr.gz * Math.sin(md));
       if (up > 0.45 && Math.abs(err) > 1.6) inp.steer = 0;
     }
-    const tv = st.v || b.v || 7;
+    if (b.i >= 1) b.slowT = 0;
+    b.slowT -= SK.skater.DT;
+    const tv = b.slowT > 0 ? 3.5 : st.v || b.v || 7;
     if (st.v) b.v = st.v;
     if (s.sp < tv - 0.3) inp.push = true;
     P.H(s.x, s.z, gr);
