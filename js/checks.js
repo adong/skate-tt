@@ -108,7 +108,7 @@
     }
     {
       // a bail loses the combo: NORMAL, a kickflip straight away, then another just before the ground
-      const s = K.create({ level: 'normal', spawn: { x: 0, z: 18.5, heading: Math.PI } });
+      const s = K.create({ level: 'normal', spawn: { x: -3, z: 14.5, heading: Math.PI } });
       s.sp = 5;
       K.step(s, { steer: 0, flip: true });
       let flipped = false;

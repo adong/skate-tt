@@ -99,7 +99,7 @@
 
   // Rails: a and b are [x, y, z]. Ledge edges are rails too (kind 'ledge').
   const rails = [
-    ['railLong', [-7, 0.6, 15], [7, 0.6, 15], 'rail'],
+    ['railLong', [-6.5, 0.6, 18.5], [6.5, 0.6, 18.5], 'rail'],
     ['railFunbox', [0, 1.22, 8.1], [0, 1.22, 3.9], 'rail'],
     ['railDiagonal', [12, 0.55, 11], [19, 0.55, 18], 'rail'],
     ['railPipe', [-18, 0.5, -8], [-18, 0.5, -17], 'rail'],
@@ -115,18 +115,18 @@
   const railY = (r, u) => r.a[1] + r.dy * u;
 
   const bounds = { x0: -28, x1: 28, z0: -24, z1: 22 };
-  const spawn = { x: 0, z: 14, heading: -Math.PI / 2 }; // facing north, at the funbox
+  const spawn = { x: 0, z: 12.6, heading: -Math.PI / 2 }; // facing north, at the funbox
 
   // Trick lines: what the brother shows you, and what the CPU friends skate. Each step is a spot to ride to;
   // jump: ollie there; air: the trick for the next time you're in the air after it (flip, grab, spin);
   // v: the speed to ride at. say: what the brother tells you. expect: what the check wants it to land on EASY.
   const lines = [
     { id: 'funboxPipe', expect: ['GRIND', 'VERT AIR', 'INDY', 'KICKFLIP'], say: 'GRIND THE FUNBOX RAIL, THEN DROP IN THE HALF-PIPE!', steps: [
-      { x: 0, z: 14 }, { x: 0, z: 11.2, v: 6.5 }, { x: 0, z: 8.0, jump: true }, { x: 0, z: 3 }, { x: 0, z: -3, v: 7 },
+      { x: 0, z: 13.6 }, { x: 0, z: 11.2, v: 6.5 }, { x: 0, z: 8.0, jump: true }, { x: 0, z: 3 }, { x: 0, z: -3, v: 7 },
       { x: 0, z: -10.3, v: 8.5 }, { x: 0, z: -19.6, air: 'grab' }, { x: 0, z: -12.2, air: 'flip' }, { x: 0, z: -19.6, air: 'spin' },
     ] },
     { id: 'railLong', expect: ['GRIND'], say: 'OLLIE ONTO THE RAIL AND GRIND IT!', steps: [
-      { x: -19, z: 15.2 }, { x: -13, z: 15, v: 6.5 }, { x: -9.9, z: 15, jump: true }, { x: 7.5, z: 15 }, { x: 11, z: 15 },
+      { x: -19, z: 18.7 }, { x: -12.5, z: 18.5, v: 6.5 }, { x: -9.4, z: 18.5, jump: true }, { x: 7, z: 18.5 }, { x: 10.5, z: 18.3 },
     ] },
     { id: 'kickerWest', expect: ['AIR', 'KICKFLIP', 'VERT AIR', 'INDY'], say: 'JUMP THE KICKER AND DO A KICKFLIP!', steps: [
       { x: -5.5, z: 13 }, { x: -7, z: 7.5, v: 7 }, { x: -11.6, z: 6, jump: true, air: 'flip' }, { x: -19.5, z: 6, v: 8.5 },

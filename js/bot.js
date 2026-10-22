@@ -13,7 +13,7 @@
   function create(o = {}) {
     return {
       rnd: SK.skater.rng(o.seed || 11), skill: o.skill || 0, line: null, i: 0, pending: null, grab: false, spinGoal: 0,
-      flipDir: '', stuckT: 0, done: 0, recent: [], wob: 0, wobT: 0, lines: o.lines || P.lines, loop: !!o.loop, lastJump: -9, rest: o.rest || 0, slowT: 0,
+      flipDir: '', stuckT: 0, done: 0, recent: [], wob: 0, wobT: 0, lines: o.lines || P.lines, loop: !!o.loop, lastJump: -9, rest: o.rest || 0, slowT: 0, boost: o.boost || 0,
     };
   }
 
@@ -108,7 +108,7 @@
     }
     if (b.i >= 1) b.slowT = 0;
     b.slowT -= SK.skater.DT;
-    const tv = b.slowT > 0 ? 3.5 : st.v || b.v || 7;
+    const tv = b.slowT > 0 ? 3.5 : (st.v || b.v || 7) + (b.boost || 0);
     if (st.v) b.v = st.v;
     if (s.sp < tv - 0.3) inp.push = true;
     P.H(s.x, s.z, gr);

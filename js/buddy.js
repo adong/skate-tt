@@ -85,10 +85,13 @@
     let inp = null;
     if (B.state === 'show' && B.bot) inp = SK.bot.think(B.bot, B.sim);
     else {
-      // roll along with the skater: steer the way he's going
+      // roll along beside the skater, at his speed, toward the spot at his side
       const md = pl.sp >= 0 ? pl.th : pl.th + Math.PI;
       const bm = B.sim.sp >= 0 ? B.sim.th : B.sim.th + Math.PI;
-      inp = { steer: B.sim.mode === 'ground' ? Math.max(-1, Math.min(1, K.wrap(md - bm) * 2)) : 0 };
+      const tx = pl.x + Math.cos(md + Math.PI / 2) * 1.4 + Math.cos(md) * 1.2, tz = pl.z + Math.sin(md + Math.PI / 2) * 1.4 + Math.sin(md) * 1.2;
+      const want = Math.hypot(tx - B.sim.x, tz - B.sim.z) > 0.8 ? Math.atan2(tz - B.sim.z, tx - B.sim.x) : md;
+      inp = { steer: B.sim.mode === 'ground' ? Math.max(-1, Math.min(1, K.wrap(want - bm) * 2)) : 0 };
+      if (B.sim.mode === 'ground' && pl.mode === 'ground') B.sim.sp = Math.max(1.5, Math.min(8, Math.abs(pl.sp) * 0.9 + 0.4));
     }
     K.step(B.sim, inp);
     B.sim.events.length = 0;
@@ -129,7 +132,7 @@
         B.line = h.chooseLine(h.player().sim);
         h.showLine(B.line);
         h.toast(`${B.entry.name} SAYS: ${B.line.say}`, 'hint');
-        B.bot = SK.bot.create({ seed: 7 + B.calls });
+        B.bot = SK.bot.create({ seed: 7 + B.calls, boost: 1.6 }); // a little faster: he leads the way
         SK.bot.setLine(B.bot, B.line, 0);
       }
     } else if (B.state === 'show') {

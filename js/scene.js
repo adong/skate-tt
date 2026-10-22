@@ -177,7 +177,8 @@
         for (const a of [sh.a0, sh.a1]) { pos.push(...P3(a, t, y)); uv.push(a / 2, arc / 2); }
         samples.push([t, y]);
       }
-      for (let i = 0; i < n; i++) {
+      const onGround = !curved && seg.f(seg.t0) === 0 && seg.f(seg.t1) === 0; // the concrete is already there
+      for (let i = 0; i < n && !onGround; i++) {
         const k = base + i * 2;
         if (flip) idx.push(k, k + 2, k + 1, k + 1, k + 2, k + 3);
         else idx.push(k, k + 1, k + 2, k + 1, k + 3, k + 2);
